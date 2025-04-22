@@ -1,0 +1,32 @@
+{% extends "shop/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block style %}
+    body {
+        background: url({% static "img/profile_back.jpg" %}) no-repeat center fixed;
+        background-size: cover;
+    }
+{% endblock %}
+
+{% block title %}{% trans "Create an account" %}{% endblock %}
+{% block content %}
+
+    <div class="wrapper">
+        <form class="profile-form"  method="POST">
+            {% csrf_token %}
+            <div class="form-header">{% trans "Create an account" %}</div>
+            {% for field in user_form %}
+                <div class="form-group">
+                    {{field.label_tag}}
+                    <div>{{field}}</div>
+                    <div class="error">{{field.errors}}</div>
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <input type="submit" value="{% trans "Create my account" %}">
+            </div>
+        </form>
+    </div>
+{% endblock %}

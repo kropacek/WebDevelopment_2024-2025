@@ -1,0 +1,72 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %}
+  {{ product.name }}
+{% endblock %}
+{% block content %}
+  <div class="product-detail">
+    <img style="width: 450px; height: 500px; overflow: hidden" src="{% if product.image %}{{ product.image.url }}{% else %}
+    {% static "img/no_image.png" %}{% endif %}">
+    <h1>{{ product.name }}</h1>
+    <h2>
+      <a href="{{ product.category.get_absolute_url }}">
+        {{ product.category }}
+      </a>
+    </h2>
+
+    <p class="price">
+        {% localize on %}
+            ${{ product.price }}
+        {% endlocalize %}
+    </p>
+    <form action="{% url "cart_app:cart_add" product.id %}" method="post">
+        <label for="id_quantity">{% trans "Quantity" %}:</label> <select name="quantity" id="id_quantity">
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+    </select>
+         <input type="hidden" name="override" value="false">
+      <input type="submit" value="{% trans "Add to cart" %}">
+        {% csrf_token %}
+    </form>
+    {{ product.description|linebreaks }}
+
+  {% if recommended_products %}
+      <div class="recommendations">
+        <h3>{% trans "People who bought this also bought" %}:</h3>
+        {% for p in recommended_products %}
+          <div class="item">
+          <span style="display: table; margin: 0 auto;">
+            <a href="{{ p.get_absolute_url }}">
+              <img src="{% if p.image %}{{ p.image.url }}{% else %}
+              {% static  "img/no_image.png" %}{% endif %}">
+            </a>
+          </span>
+            <p><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

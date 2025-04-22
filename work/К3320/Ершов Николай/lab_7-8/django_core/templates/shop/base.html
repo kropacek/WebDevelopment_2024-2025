@@ -1,0 +1,89 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Bjørk{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <style>{% block style %}{% endblock %}</style>
+  </head>
+  <body>
+    <div id="header">
+          {% get_current_language as LANGUAGE_CODE %}
+          <a href="/{{LANGUAGE_CODE}}/" class="logo">Bjørk</a>
+
+          <ul class="h-menu">
+              <li class="h-menu-item">
+                  <a href="{% url 'shop_app:about' %}" class="profile">{% trans "About" %}</a>
+              </li>
+              <li class="h-menu-item">
+                  <a href="{% url 'user_app:contact' %}" class="profile">{% trans "Contact" %}</a>
+              </li>
+              <li class="h-menu-item">
+                  <a href="{% url "user_app:profile_view" %}" class="profile">
+                      {% if request.user.is_authenticated %}
+                          {% trans "Profile" %}
+                      {% else %}
+                          {% trans "Log in" %}
+                      {% endif %}
+                  </a>
+              </li>
+              <li class="h-menu-item">
+                  <form id="languageForm">
+                    <label for="languageSelect"></label>
+                    <select id="languageSelect" class="language-select" name="languageSelect" onchange="redirectToLanguage()">
+                      <option value="/en/" {% if 'en' == LANGUAGE_CODE %}selected{% endif %}>Eng</option>
+                      <option value="/ru/" {% if 'ru' == LANGUAGE_CODE %}selected{% endif %}>Rus</option>
+                    </select>
+                  </form>
+              </li>
+          </ul>
+        </div>
+
+    <div id="subheader">
+      <div class="cart">
+        {% with total_items=cart|length %}
+          {% if total_items > 0 %}
+            {% trans "Your cart:" %}
+            <a href="{% url "cart_app:cart_detail" %}">
+              {{ total_items }} {% trans "item" %}{{ total_items|pluralize }},
+              ${{ cart.get_total_price }}
+            </a>
+          {% elif not order %}
+            {% trans "Your cart is empty." %}
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="{{ request.get_current }}" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <div id="footer">
+        <p>© 2025 Bjørk. {% trans "All rights reserved." %}</p>
+    </div>
+
+  <script>
+    function redirectToLanguage() {
+        const select = document.getElementById('languageSelect');
+        const selectedLanguage = select.value;
+        window.location.href = selectedLanguage;
+    }
+</script>
+  </body>
+</html>

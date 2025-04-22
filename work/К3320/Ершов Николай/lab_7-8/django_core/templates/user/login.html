@@ -1,0 +1,35 @@
+{% extends "shop/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block style %}
+    body {
+        background: url({% static "img/profile_back.jpg" %}) no-repeat center fixed;
+        background-size: cover;
+    }
+{% endblock %}
+
+{% block title %}{% trans "Log-in" %}{% endblock %}
+{% block content %}
+
+    <div class="wrapper">
+        <form class="profile-form"  method="POST">
+            {% csrf_token %}
+            <div class="form-header">{% trans "Log-in" %}</div>
+            {% for field in form %}
+                <div class="form-group">
+                    {{field.label_tag}}
+                    <div>{{field}}</div>
+                    <div class="error">{{field.errors}}</div>
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <input type="submit" value="{% trans "Log in" %}">
+            </div>
+
+            <a href="{% url "user_app:registration_view" %}" class="edit-profile-button">{% trans "Registration" %}</a>
+            <a href="{% url "user_app:password_reset" %}" class="edit-profile-button">{% trans "Forgot your password" %}?</a>
+        </form>
+    </div>
+{% endblock %}
