@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта изображений</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #f0f0f5;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Карта изображений</h1>
+
+<img src="/static/img_1.png" usemap="#image-map" alt="Карта изображений">
+
+<map name="image-map">
+    <area shape="rect" coords="220,435,290,460" href="https://www.lamoda.ru/p/mp002xm00ef4/shoes-francescodonni-tufli/" alt="Ссылка">
+    <area shape="circle" coords="230,160,43" onclick="changeColor(event)" alt="Изменение цвета">
+    <area shape="poly" coords="110,100,140,40,210,15,275,40" onclick="showMessage()" alt="Сообщение">
+    <area shape="rect" coords="260,245,330,300" href="/transition/" alt="Переход">
+    <area shape="circle" coords="310,125,43" onclick="alert('Вы нажали на правый глаз!')" alt="Оповещение">
+</map>
+
+<script>
+    function changeColor(event) {
+        event.preventDefault();
+        document.body.style.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    }
+    function showMessage() {
+        alert("Вы нажали на многоугольную область!");
+    }
+</script>
+
+</body>
+</html>
